@@ -883,10 +883,6 @@ on zygote-start && property:ro.crypto.state=encrypted && property:ro.crypto.type
     start zygote_secondary
 
 on boot
-
-    chown system system /dev/knox_kap
-    chmod 0644 /dev/knox_kap
- 
     # Permissions for Touchscreen, Touchkey
     chown system radio /sys/class/sec/tsp/cmd
     chown system system /sys/class/sec/tsp/input/enabled
@@ -1912,54 +1908,6 @@ service jackservice /system/bin/jackservice
     user jack
     group audio inet shell
 # Professional audio ]
-
-# knox_changer service
-# Allow the Knox Active Protection mode to be set from recovery
-service kap_enable /sbin/knox_changer -e
-    seclabel u:r:kapd:s0
-    class main
-    disabled
-    oneshot
-
-service kap_disable /sbin/knox_changer -d
-    seclabel u:r:kapd:s0
-    class main
-    disabled
-    oneshot
-
-on property:security.knox_kap_mode=true
-    start kap_enable
-
-on property:security.knox_kap_mode=false
-    start kap_disable
-
-# UCM ODE mode
-service ucs_enable /sbin/knox_changer -u
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_disable /sbin/knox_changer -v
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_reset /sbin/knox_changer -w
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-on property:security.knox_ucs_mode=true
-    start ucs_enable
-
-on property:security.knox_ucs_mode=false
-    start ucs_disable
-
-on property:security.knox_ucs_mode=reset
-    start ucs_reset
 
 # IO stats Deamon
 service iod /system/bin/iod

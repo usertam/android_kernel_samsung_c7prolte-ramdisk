@@ -270,11 +270,6 @@ on init
 	# NPS permission
     mkdir /dev/socket/nps 0770 system system
 
-    # VaultKeeper socket
-    mkdir /dev/socket/vaultkeeper 0770 system system
-    chown system system /dev/socket/vaultkeeper
-    chmod 0770 /dev/socket/vaultkeeper
-
     # barnswallow Daemon socket
     mkdir /dev/socket/bsd 0770 system system
 
@@ -1819,9 +1814,6 @@ service console /system/bin/sh
     user shell
     group shell log readproc
     seclabel u:r:shell:s0
-
-service vaultkeeperd /system/bin/vaultkeeperd
-    class core
 
 on property:ro.debuggable=1
     # Give writes to anyone for the trace folder on debug builds.

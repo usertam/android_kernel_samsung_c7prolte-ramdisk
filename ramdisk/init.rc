@@ -1810,11 +1810,22 @@ service console /system/bin/sh
     group shell log readproc
     seclabel u:r:shell:s0
 
+service adbd /sbin/adbd
+    disabled
+    socket adbd stream 660 system system
+    seclabel u:r:adbd:s0
+
 on property:ro.debuggable=1
     # Give writes to anyone for the trace folder on debug builds.
     # The folder is used to store method traces.
     chmod 0773 /data/misc/trace
     start console
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 04E8
+    write /sys/class/android_usb/android0/idProduct 6860
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
 
 # LPM
 service lpm /system/bin/lpm
